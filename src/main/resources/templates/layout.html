@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>asdf</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
+<th:block layout:fragment="content"></th:block>
+<footer class="py-3 mt-auto h-50 bg-secondary text-white">
+  <div class="">
+    <h3>푸터입니다</h3>
+  </div>
+</footer>
+</body>
+</html>

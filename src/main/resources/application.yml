@@ -1,0 +1,33 @@
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    freemarker:
+      cache: true
+    thymeleaf:
+      cache: true
+
+  datasource:
+    url: jdbc:mariadb://localhost:3306/okmall
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: scc95953048!
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDB106Dialect
+    properties:
+      hibernate:
+        show-sql: true
+        format-sql: true
+    hibernate:
+      ddl-auto: update
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    cache: false
+
+jasypt:
+  encryptor:
+    baen: jasyptStringEncryptor
+
+kakao:
+  key: dbstjrwns1

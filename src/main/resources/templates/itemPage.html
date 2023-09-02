@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+    <div class="container text-center" layout:fragment="content">
+        <div class="row">
+            <a th:href="@{'https://www.okmall.com' + ${result.productAddress}}">
+                <img class="rounded mx-auto d-block" th:src="${result.productImg}" alt="">
+                <div th:text="${result.productName}" class="col align-self-center"></div>
+            </a>
+        </div>
+        <div class="">
+            <button onclick="filterData('1w')">1주일</button>
+            <button onclick="filterData('3m')">3개월</button>
+            <button onclick="filterData('1y')">1년</button>
+        </div>
+        <div id="Chart" class="row"></div>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="/js/myChart.js"></script>
+    </div>
+</html>

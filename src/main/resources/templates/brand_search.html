@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <h1>검색 결과</h1>
+    <ol>
+        <li th:each="result : ${results}">
+            <div class="container">
+                <a th:href="@{/view(num=${result.productNum})}">
+                    <img class="productImg" src="../static/untitled.png" alt="">
+                    <span th:text="${result.productName}" class="productName"></span>
+                </a>
+            </div>
+        </li>
+    </ol>
+</body>
+</html>

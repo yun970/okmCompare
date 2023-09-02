@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart.js Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<canvas id="myChart" width="400" height="200"></canvas>
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const data = {
+      labels: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+      datasets: [{
+        label: 'Sample Data',
+        data: [20, 35, 50, 25, 60, 40, 80, 30, 70, 90, 45],
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    };
+    const options = {
+      scales: {
+        x: {
+          ticks: {
+            stepSize: 50, // X축 눈금 간격 설정
+          }
+        },
+        y: {
+          beginAtZero: true
+        }
+      }
+    };
+    const myChart = new Chart(ctx, {
+      type: 'bar',
+      data: data,
+      options: options
+    });
+  </script>
+</body>
+</html>

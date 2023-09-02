@@ -1,0 +1,30 @@
+<!-- entity-list.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Entity List</title>
+</head>
+<body>
+<h1>Entity List</h1>
+<table>
+  <thead>
+  <tr>
+    <th>product_name</th>
+    <th>product_price</th>
+    <th>product_num</th>
+    <th>product_img</th>
+    <th>create_date</th>
+    <!-- 추가 필드 -->
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="entity : ${entities}">
+<!--    <td th:text="${entity.id}"></td>-->
+    <td th:text="${entity.name}"></td>
+    <td th:text="${entity.address}"></td>
+    <td th:text="${entity.id}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
