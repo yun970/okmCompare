@@ -8,10 +8,10 @@ spring:
       cache: true
 
   datasource:
-    url: jdbc:mariadb://localhost:3306/okmall
+    url: jdbc:mariadb://database-1.cii1ws7cibkw.ap-northeast-2.rds.amazonaws.com/okmall
     driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: scc95953048!
+    username: yun970 
+    password: scc95953048
   jpa:
     database-platform: org.hibernate.dialect.MariaDB106Dialect
     properties:
