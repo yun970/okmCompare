@@ -1,0 +1,33 @@
+
+name: Python Crawling
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+jobs:
+  run_crawling:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+    - name: Install dependencies
+      run: |
+        python pip install --upgrade pip
+        pip install beautifulsoup4 mysql-connector-python
+    - name: Run crawling script
+      env:
+        AWS_RDS_DB: ${{secrets.AWS_RDS_DB}}
+        AWS_RDS_HOST: ${{secrets.AWS_RDS_HOST}}
+        AWS_RDS_PASSWORD: ${{secrets.AWS_RDS_PASSWORD}}
+        AWS_RDS_PORT: ${{secrets.AWS_RDS_PORT}}
+        AWS_RDS_USER: ${{secrets.AWS_RDS_USER}}
+      run: python crawling.py
+      
+        
+      
