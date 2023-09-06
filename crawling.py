@@ -2,15 +2,25 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 import datetime as dt
-from selenium import webdriver
-from selenium.webdriver.common.by import By 
 import time
 import uuid
 from datetime import datetime, date
+import os
+
+AWS_RDS_HOST = os.environ.get("AWS_RDS_HOST")
+AWS_RDS_USER = os.environ.get("AWS_RDS_USER")
+AWS_RDS_PASSWORD = os.environ.get("AWS_RDS_PASSWORD")
+AWS_RDS_DB = os.environ.get("AWS_RDS_DB")
+AWS_RDS_PORT = os.environ.get("AWS_RDS_PORT")
 
 
 conn = mysql.connector.connect(
-    
+    host = AWS_RDS_HOST,
+    user = AWS_RDS_USER,
+    password = AWS_RDS_PASSWORD,
+    port = AWS_RDS_PORT,
+    database = AWS_RDS_DB,
+    autocommit = True,
 )
 
 cursor = conn.cursor()
@@ -18,18 +28,6 @@ cursor = conn.cursor()
 def itemExtract(item): 
     item = item.strip('()').split()[0]
     return item
-
-def renewLowestPrice():
-    # 오늘의 최저가
-    # select 
-
-
-
-    # 가격 페이지에서 푸시알람 설정
-    # 5개까지만 가능하게 설정
-    # 알람을 설정한 날짜의 가격보다 더 낮은 가격이 갱신되었을 경우 알람 (메일 발송)
-    # 스프링부트에서 설정 -> 
-    pass
 
 
 def parsing(brand,url,id):
@@ -78,25 +76,10 @@ def parsing(brand,url,id):
                 
                 cursor.execute(lowestPriceQuery)
                 _lowestPrice = (cursor.fetchall())
-                print(productNum, _lowestPrice)
                 try:
                     lowestPrice = _lowestPrice[0][0].decode('utf-8')
                 except:
                     lowestPrice = None
-
-                # try:
-                #     lowestPriceQuery = f'''
-                #     select price_id from price where product_num = {productNum} order by product_price limit 1;
-                #     '''
-                
-                #     cursor.execute(lowestPriceQuery)
-                #     lowestPrice = (cursor.fetchall())
-                #     print(productNum, lowestPrice)
-                #     lowestPrice = lowestPrice[0][0].decode('utf-8')
-
-                    
-                    
-                    
 
                 
                 yesterdayPriceQuery = f'''
@@ -104,7 +87,6 @@ def parsing(brand,url,id):
                 '''            
                 cursor.execute(yesterdayPriceQuery)
                 yesterdayPrice = cursor.fetchall()
-                print(productNum, yesterdayPrice)
                 try:
                     yesterdayPrice = yesterdayPrice[0][0].decode('utf-8')
                 except:
@@ -132,10 +114,6 @@ def parsing(brand,url,id):
                     '''
                     cursor.execute(update_query)
 
-                # products 테이블에 todayPrice, yesterdayPrice, LowestPrice에 각각 select 한 price_id 삽입
-                
-                
-                
                 
 
         url = soup.find('a',class_="nextPage")
@@ -151,9 +129,6 @@ def parsing(brand,url,id):
                 url = ""
     conn.commit()
     print(f"{brand} 가격 업데이트 종료")
-#차후 수정 필요
-
-#차후 수정 필요
 
 def crawling():
     homepage = "https://www.okmall.com/"
@@ -197,8 +172,6 @@ def crawling():
             cursor.execute(insertBrandSql)
             conn.commit()
             print('데이터 입력 완료')
-
-# crawling()
 
 
 

@@ -8,7 +8,7 @@ let price = [];
 
     const url = new URL(window.location.href);
     let num = url.searchParams.get('num');
-    fetch(`http://localhost:8080/datalist/${num}`)
+    fetch(`http://15.164.249.252/datalist/${num}`)
       .then(response => response.json())
       .then(data => {
         data.sort((a, b) => {
