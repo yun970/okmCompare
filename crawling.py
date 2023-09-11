@@ -2,25 +2,19 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 import datetime as dt
+from selenium import webdriver
+from selenium.webdriver.common.by import By 
 import time
 import uuid
 from datetime import datetime, date
-import os
-
-AWS_RDS_HOST = os.environ.get("AWS_RDS_HOST")
-AWS_RDS_USER = os.environ.get("AWS_RDS_USER")
-AWS_RDS_PASSWORD = os.environ.get("AWS_RDS_PASSWORD")
-AWS_RDS_DB = os.environ.get("AWS_RDS_DB")
-AWS_RDS_PORT = os.environ.get("AWS_RDS_PORT")
 
 
 conn = mysql.connector.connect(
-    host = AWS_RDS_HOST,
-    user = AWS_RDS_USER,
-    password = AWS_RDS_PASSWORD,
-    port = AWS_RDS_PORT,
-    database = AWS_RDS_DB,
-    autocommit = True,
+    host = 'database-1.cii1ws7cibkw.ap-northeast-2.rds.amazonaws.com',
+    user = 'yun970',
+    password = 'scc95953048',
+    database = 'okmall',
+    autocommit = True
 )
 
 cursor = conn.cursor()
@@ -28,7 +22,6 @@ cursor = conn.cursor()
 def itemExtract(item): 
     item = item.strip('()').split()[0]
     return item
-
 
 def parsing(brand,url,id):
 
@@ -44,13 +37,14 @@ def parsing(brand,url,id):
         try:
             response = requests.get(url, headers=headers)
         
-        except:
-            time.sleep(15)
+        except Exception as e:
+            print(e + " 타임아웃 에러 발생")
+            time.sleep(5)
             response = requests.get(url, headers=headers)
 
         soup=BeautifulSoup(response.content, "html.parser")
         html = soup.select("[data-productno]")
-        time.sleep(5)
+
 
         for a in html:
             try:
@@ -70,32 +64,31 @@ def parsing(brand,url,id):
                 '''
                 cursor.execute(insert_query)
 
-                lowestPriceQuery = f'''
-                    select price_id from price where product_num = {productNum} order by product_price limit 1;
-                    '''
+                # lowestPriceQuery = f'''
+                #     select price_id from price where product_num = {productNum} order by product_price limit 1;
+                #     '''
                 
-                cursor.execute(lowestPriceQuery)
-                _lowestPrice = (cursor.fetchall())
-                try:
-                    lowestPrice = _lowestPrice[0][0].decode('utf-8')
-                except:
-                    lowestPrice = None
+                # cursor.execute(lowestPriceQuery)
+                # _lowestPrice = (cursor.fetchall())
+                # print(productNum, _lowestPrice)
+                # try:
+                #     lowestPrice = _lowestPrice[0][0].decode('utf-8')
+                # except:
+                #     lowestPrice = None
+                                 
+                    
 
                 
-                yesterdayPriceQuery = f'''
-                    select price_id from price where product_num = {productNum} order by create_date desc limit 1 offset 1;
-                '''            
-                cursor.execute(yesterdayPriceQuery)
-                yesterdayPrice = cursor.fetchall()
-                try:
-                    yesterdayPrice = yesterdayPrice[0][0].decode('utf-8')
-                except:
-                    yesterdayPrice = None
-                
-                
-                todyPrice = priceId
-
-                
+                # yesterdayPriceQuery = f'''
+                #     select price_id from price where product_num = {productNum} order by create_date desc limit 1 offset 1;
+                # '''            
+                # cursor.execute(yesterdayPriceQuery)
+                # yesterdayPrice = cursor.fetchall()
+                # print(productNum, yesterdayPrice)
+                # try:
+                #     yesterdayPrice = yesterdayPrice[0][0].decode('utf-8')
+                # except:
+                #     yesterdayPrice = None
 
                 if productName != None:
                     insert_query = f'''
@@ -104,16 +97,29 @@ def parsing(brand,url,id):
                     '''
                     cursor.execute(insert_query)
 
-                    update_query = f'''
-                        update products
-                        set today_price = '{todyPrice}',
-                        yesterday_price = '{yesterdayPrice}',
-                        lowest_price = '{lowestPrice}'
-                        where product_num = {productNum};
-
+                    update_product_query ='''
+                        UPDATE products
+                        SET today_price = %s, yesterday_price = (
+                            SELECT price_id
+                            FROM price
+                            WHERE product_num = %s
+                            ORDER BY create_date DESC
+                            LIMIT 1 OFFSET 1
+                        ), lowest_price =(
+                            SELECT price_id
+                            FROM price
+                            WHERE product_num = %s
+                            ORDER BY product_price
+                            LIMIT 1
+                        )
+                        WHERE product_num = %s
                     '''
-                    cursor.execute(update_query)
 
+                    cursor.execute(update_product_query, (priceId, productNum,productNum,productNum))
+                
+                
+                
+                
                 
 
         url = soup.find('a',class_="nextPage")
@@ -172,8 +178,6 @@ def crawling():
             cursor.execute(insertBrandSql)
             conn.commit()
             print('데이터 입력 완료')
-
-
 
 
 selectQuery = '''
