@@ -68,31 +68,6 @@ def parsing(brand,url,id):
                 '''
                 cursor.execute(insert_query)
 
-                # lowestPriceQuery = f'''
-                #     select price_id from price where product_num = {productNum} order by product_price limit 1;
-                #     '''
-                
-                # cursor.execute(lowestPriceQuery)
-                # _lowestPrice = (cursor.fetchall())
-                # print(productNum, _lowestPrice)
-                # try:
-                #     lowestPrice = _lowestPrice[0][0].decode('utf-8')
-                # except:
-                #     lowestPrice = None
-                                 
-                    
-
-                
-                # yesterdayPriceQuery = f'''
-                #     select price_id from price where product_num = {productNum} order by create_date desc limit 1 offset 1;
-                # '''            
-                # cursor.execute(yesterdayPriceQuery)
-                # yesterdayPrice = cursor.fetchall()
-                # print(productNum, yesterdayPrice)
-                # try:
-                #     yesterdayPrice = yesterdayPrice[0][0].decode('utf-8')
-                # except:
-                #     yesterdayPrice = None
 
                 if productName != None:
                     insert_query = f'''
