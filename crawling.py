@@ -2,8 +2,8 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 import datetime as dt
-from selenium import webdriver
-from selenium.webdriver.common.by import By 
+#from selenium import webdriver
+#from selenium.webdriver.common.by import By 
 import time
 import uuid
 from datetime import datetime, date
@@ -43,7 +43,7 @@ def parsing(brand,url,id):
         
         except Exception as e:
             print(e + " 타임아웃 에러 발생")
-            time.sleep(5)
+            time.sleep(10)
             response = requests.get(url, headers=headers)
 
         soup=BeautifulSoup(response.content, "html.parser")
