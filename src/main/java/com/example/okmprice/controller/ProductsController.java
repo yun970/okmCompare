@@ -40,7 +40,7 @@ public class ProductsController {
     @GetMapping("/search")
     public String searchProduct(@RequestParam("keyword") String keyword, Model model, @RequestParam(value="page", defaultValue="0") int page){
 
-        Brands rs = brandsService.searchBrands(keyword);
+        Brands rs = brandsService.searchBrandsName(keyword);
         if(rs != null){
             Page<Products> result = productsService.searchProductsByNumber(rs.getId(), page);
             model.addAttribute("paging", result);
@@ -74,7 +74,8 @@ public class ProductsController {
     @GetMapping("/view")
     public String ProductPage(@RequestParam int num, Model model){
         Optional<Products> product = productsService.searchProductByNumber(num);
-        model.addAttribute("result", product.get());
+        model.addAttribute("result1", product.get());
+        model.addAttribute("result2", brandsService.searchBrandsId(product.get().getId()));
         return "itemPage";
     }
 

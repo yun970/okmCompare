@@ -2,9 +2,10 @@
 <html layout:decorate="~{layout}">
     <div class="container text-center" layout:fragment="content">
         <div class="row">
-            <a th:href="@{'https://www.okmall.com' + ${result.productAddress}}">
-                <img class="rounded mx-auto d-block" th:src="${result.productImg}" alt="">
-                <div th:text="${result.productName}" class="col align-self-center"></div>
+            <a th:href="@{'https://www.okmall.com' + ${result1.productAddress}}">
+                <img class="rounded mx-auto d-block" th:src="${result1.productImg}" alt="">
+                <div th:text="${result2.name}"></div>
+                <div th:text="${result1.productName}" class="col align-self-center"></div>
             </a>
         </div>
         <div class="">
