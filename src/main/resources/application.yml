@@ -30,4 +30,4 @@ jasypt:
     baen: jasyptStringEncryptor
 
 kakao:
-  key:
+  key: ${kakao_key}
