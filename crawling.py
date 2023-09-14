@@ -2,18 +2,22 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 import datetime as dt
-from selenium import webdriver
-from selenium.webdriver.common.by import By 
+#from selenium import webdriver
+#from selenium.webdriver.common.by import By 
 import time
 import uuid
 from datetime import datetime, date
 
+AWS_RDS_HOST = os.environ.get("AWS_RDS_HOST")
+AWS_RDS_PASSWORD = os.environ.get("AWS_RDS_PASSWORD")
+AWS_RDS_USER = os.environ.get("AWS_RDS_USER") 
+AWS_RDS_DB = os.environ.get("AWS_RDS_DB")
 
 conn = mysql.connector.connect(
-    host = 'database-1.cii1ws7cibkw.ap-northeast-2.rds.amazonaws.com',
-    user = 'yun970',
-    password = 'scc95953048',
-    database = 'okmall',
+    host = AWS_RDS_HOST,
+    user = AWS_RDS_USER,
+    password = AWS_RDS_PASSWORD,
+    database = AWS_RDS_DB,
     autocommit = True
 )
 
@@ -39,7 +43,7 @@ def parsing(brand,url,id):
         
         except Exception as e:
             print(e + " 타임아웃 에러 발생")
-            time.sleep(5)
+            time.sleep(10)
             response = requests.get(url, headers=headers)
 
         soup=BeautifulSoup(response.content, "html.parser")
@@ -64,31 +68,6 @@ def parsing(brand,url,id):
                 '''
                 cursor.execute(insert_query)
 
-                # lowestPriceQuery = f'''
-                #     select price_id from price where product_num = {productNum} order by product_price limit 1;
-                #     '''
-                
-                # cursor.execute(lowestPriceQuery)
-                # _lowestPrice = (cursor.fetchall())
-                # print(productNum, _lowestPrice)
-                # try:
-                #     lowestPrice = _lowestPrice[0][0].decode('utf-8')
-                # except:
-                #     lowestPrice = None
-                                 
-                    
-
-                
-                # yesterdayPriceQuery = f'''
-                #     select price_id from price where product_num = {productNum} order by create_date desc limit 1 offset 1;
-                # '''            
-                # cursor.execute(yesterdayPriceQuery)
-                # yesterdayPrice = cursor.fetchall()
-                # print(productNum, yesterdayPrice)
-                # try:
-                #     yesterdayPrice = yesterdayPrice[0][0].decode('utf-8')
-                # except:
-                #     yesterdayPrice = None
 
                 if productName != None:
                     insert_query = f'''
