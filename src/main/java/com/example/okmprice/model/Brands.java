@@ -43,6 +43,6 @@ public class Brands {
         this.productsList = productsList;
     }
 
-    @OneToMany(mappedBy = "brands", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "brands", cascade = CascadeType.REMOVE)
     private List<Products> productsList;
 }

@@ -29,7 +29,11 @@ public class Products {
     }
 
     @ManyToOne
+    @Column(name = "id")
     private Brands brands;
+
+    @OneToMany(mappedBy = "products", cascade = CascadeType.REMOVE)
+    private List<Price> priceList;
 
     public UUID getTodayPrice() {
         return todayPrice;
