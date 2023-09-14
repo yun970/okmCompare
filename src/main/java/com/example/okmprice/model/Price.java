@@ -1,9 +1,6 @@
 package com.example.okmprice.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.UUID;
@@ -54,7 +51,7 @@ public class Price {
     private int productNum;
     private int productPrice;
     private Date createDate;
-    @Column(name = "product_num")
+    @JoinColumn(name = "product_num")
     @ManyToOne
     private Products products;
 
