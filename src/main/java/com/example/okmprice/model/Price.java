@@ -1,5 +1,6 @@
 package com.example.okmprice.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -41,10 +42,20 @@ public class Price {
         this.createDate = createDate;
     }
 
+    public Products getProducts() {
+        return products;
+    }
+
+    public void setProducts(Products products) {
+        this.products = products;
+    }
     @Id
     private UUID priceId;
     private int productNum;
     private int productPrice;
     private Date createDate;
+    @Column(name = "product_num")
+    @ManyToOne
+    private Products products;
 
 }
