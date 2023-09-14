@@ -29,7 +29,7 @@ public class Products {
     }
 
     @ManyToOne
-    @Column(name = "id")
+    @JoinColumn(name = "id")
     private Brands brands;
 
     @OneToMany(mappedBy = "products", cascade = CascadeType.REMOVE)
