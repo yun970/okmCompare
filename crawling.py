@@ -120,38 +120,6 @@ def parsing(value):
                 product.append((productNum,str(id),productName,productImg,productAddress,today_date,today_date))
                 price.append((priceId,productNum,productPrice,today_date))
                 update.append((priceId,productNum,productNum,productNum))
-
-                
-
-                # lowestPriceQuery = f'''
-                #     select price_id from price where product_num = {productNum} order by product_price limit 1;
-                #     '''
-                
-                # cursor.execute(lowestPriceQuery)
-                # _lowestPrice = (cursor.fetchall())
-                # print(productNum, _lowestPrice)
-                # try:
-                #     lowestPrice = _lowestPrice[0][0].decode('utf-8')
-                # except:
-                #     lowestPrice = None
-                                 
-                    
-
-                
-                # yesterdayPriceQuery = f'''
-                #     select price_id from price where product_num = {productNum} order by create_date desc limit 1 offset 1;
-                # '''            
-                # cursor.execute(yesterdayPriceQuery)
-                # yesterdayPrice = cursor.fetchall()
-                # print(productNum, yesterdayPrice)
-                # try:
-                #     yesterdayPrice = yesterdayPrice[0][0].decode('utf-8')
-                # except:
-                #     yesterdayPrice = None
-
-
-                
-                
                 
                 
                 
@@ -252,19 +220,6 @@ if __name__=='__main__':
     price_list = [item for sublist in _price_list for item in sublist]
     update_list = [item for sublist in _update_list for item in sublist]
     
-    with open("product.txt","w",encoding="utf8") as f:
-        for product in product_list:
-            f.write("\n\n\--------------- 절취선 ---------------n\n")
-            f.write(str(product))
-    with open("price.txt","w",encoding="utf8") as f:
-        for product in price_list:
-            f.write("\n\n\--------------- 절취선 ---------------n\n")
-            f.write(str(product))
-    with open("update.txt","w",encoding="utf8") as f:
-        for product in update_list:
-            f.write("\n\n\--------------- 절취선 ---------------n\n")
-            f.write(str(product))
-
     insert_product_query = '''
                     insert into products (product_num, id, product_name, product_img, product_address, recently_date) values (%s,%s,%s,%s,%s,%s)
                     ON duplicate KEY UPDATE recently_date=%s;
@@ -281,7 +236,7 @@ if __name__=='__main__':
     '''
     for i in _price_list:
         cursor.executemany(insert_price_query,i)    
-        print("진행중..")
+        
     print("price list 업데이트 완료")
     
     conn.commit()
