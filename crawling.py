@@ -27,53 +27,6 @@ conn = mysql.connector.connect(
 
 cursor = conn.cursor()
 
-def insert_data_sql(brand,id,priceId,productAddress,productNum,productName,productPrice,productImg):
-    
-
-    insert_query = f'''
-        insert ignore into price (price_id,product_num,product_price,create_date) values ('{priceId}','{productNum}','{productPrice}','{recently_date}');
-    '''
-    cursor.execute(insert_query)
-
-    if productName != None:
-        insert_query = f'''
-                    insert into products (product_num, id, product_name, product_img, product_address) values ('{productNum}','{id}','{productName}','{productImg}','{productAddress}')
-                    ON duplicate KEY UPDATE recently_date='{recently_date}', product_address='{productAddress}', product_img = '{productImg}';
-                    '''
-        cursor.execute(insert_query)
-
-        update_product_query ='''
-                        UPDATE products
-                        SET today_price = %s, yesterday_price = (
-                            SELECT price_id
-                            FROM price
-                            WHERE product_num = %s
-                            ORDER BY create_date DESC
-                            LIMIT 1 OFFSET 1
-                        ), lowest_price =(
-                            SELECT price_id
-                            FROM price
-                            WHERE product_num = %s
-                            ORDER BY product_price
-                            LIMIT 1
-                        )
-                        WHERE product_num = %s
-                    '''
-
-        cursor.execute(update_product_query, (priceId, productNum,productNum,productNum))
-
-def insert_data_file(brand,id,priceId,productAddress,productNum,productName,productPrice,productImg):
-    
-    # with open(f"{brand}.txt","w+") as f:
-    #     f.write(f"{priceId},{productAddress},{productNum},{productName},{productPrice},{productImg},{id}")
-    # print(f"{priceId},{productAddress},{productNum},{productName},{productPrice},{productImg},{id}")
-    pass
-
-
-def itemExtract(item): 
-    item = item.strip('()').split()[0]
-    return item
-
 def parsing(value):
     
     brand = value[0]
@@ -111,6 +64,7 @@ def parsing(value):
                 productAddress = a.find('a').get('href')
                 productNum = a.get("data-productno")
                 productName = a.find("span", class_="prName_PrName").text.replace("'","")
+
                 productPrice = int(a.find("span", class_="okmall_price").text.strip('~').replace(",",""))
                 productImg = a.find('img').get('data-original')
                 if productImg == None:
@@ -118,11 +72,10 @@ def parsing(value):
             
                 
                 product.append((productNum,str(id),productName,productImg,productAddress,today_date,today_date))
-                price.append((priceId,productNum,productPrice,today_date))
+                price.append([priceId,productNum,productPrice,today_date])
                 update.append((priceId,productNum,productNum,productNum))
-                
-                
-                
+
+                  
 
         url = soup.find('a',class_="nextPage")
         url = url.get("href")
@@ -183,9 +136,6 @@ def crawling():
             conn.commit()
             print('데이터 입력 완료')
 
-def tempfunc(url):
-    print("url0 : ",url[0], "url1 : ",url[1],"url2 : ", url[2])
-
 if __name__=='__main__':
 
     selectQuery = '''
@@ -220,6 +170,19 @@ if __name__=='__main__':
     price_list = [item for sublist in _price_list for item in sublist]
     update_list = [item for sublist in _update_list for item in sublist]
     
+    with open("product.txt","w",encoding="utf8") as f:
+        for product in product_list:
+            f.write("\n\n\--------------- 절취선 ---------------n\n")
+            f.write(str(product))
+    with open("price.txt","w",encoding="utf8") as f:
+        for product in price_list:
+            f.write("\n\n\--------------- 절취선 ---------------n\n")
+            f.write(str(product))
+    with open("update.txt","w",encoding="utf8") as f:
+        for product in update_list:
+            f.write("\n\n\--------------- 절취선 ---------------n\n")
+            f.write(str(product))
+
     insert_product_query = '''
                     insert into products (product_num, id, product_name, product_img, product_address, recently_date) values (%s,%s,%s,%s,%s,%s)
                     ON duplicate KEY UPDATE recently_date=%s;
@@ -236,32 +199,36 @@ if __name__=='__main__':
     '''
     for i in _price_list:
         cursor.executemany(insert_price_query,i)    
-        
+        print("진행중..")
     print("price list 업데이트 완료")
     
     conn.commit()
 
-    update_product_query ='''
-                        UPDATE products
-                        SET today_price = %s, yesterday_price = (
-                            SELECT price_id
-                            FROM price
-                            WHERE product_num = %s
-                            ORDER BY create_date DESC
-                            LIMIT 1 OFFSET 1
-                        ), lowest_price =(
-                            SELECT price_id
-                            FROM price
-                            WHERE product_num = %s
-                            ORDER BY product_price
-                            LIMIT 1
-                        )
-                        WHERE product_num = %s
-                    '''
-    for i in _update_list:
-        cursor.executemany(update_product_query, i)
-        print("진행중..")
-    
+    update_product_query = '''                    
+                UPDATE products AS p
+                JOIN (
+                    SELECT 
+                        p.product_num,
+                        MAX(CASE WHEN p.rank = 1 THEN p.price_id END) AS today_price,
+                        MAX(CASE WHEN p.rank = 2 THEN p.price_id END) AS yesterday_price,
+                        MIN(p.price_id) AS lowest_price
+                    FROM (
+                        SELECT 
+                            price.product_num,
+                            price.price_id,
+                            price.product_price,
+                            ROW_NUMBER() OVER (PARTITION BY price.product_num ORDER BY price.create_date DESC) AS rank
+                        FROM price
+                    ) AS p
+                    GROUP BY p.product_num
+                ) AS subquery ON p.product_num = subquery.product_num
+                SET
+                    p.today_price = subquery.today_price,
+                    p.yesterday_price = subquery.yesterday_price,
+                    p.lowest_price = subquery.lowest_price;
+                '''
+    cursor.execute(update_product_query)
+
     print("최저가 list 업데이트 완료")
 
     conn.commit()
