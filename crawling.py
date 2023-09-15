@@ -168,18 +168,6 @@ if __name__=='__main__':
     price_list = [item for sublist in _price_list for item in sublist]
     update_list = [item for sublist in _update_list for item in sublist]
     
-    with open("product.txt","w",encoding="utf8") as f:
-        for product in product_list:
-            f.write("\n\n\--------------- 절취선 ---------------n\n")
-            f.write(str(product))
-    with open("price.txt","w",encoding="utf8") as f:
-        for product in price_list:
-            f.write("\n\n\--------------- 절취선 ---------------n\n")
-            f.write(str(product))
-    with open("update.txt","w",encoding="utf8") as f:
-        for product in update_list:
-            f.write("\n\n\--------------- 절취선 ---------------n\n")
-            f.write(str(product))
 
     insert_product_query = '''
                     insert into products (product_num, id, product_name, product_img, product_address, recently_date) values (%s,%s,%s,%s,%s,%s)
@@ -195,7 +183,7 @@ if __name__=='__main__':
     '''
     for i in _price_list:
         cursor.executemany(insert_price_query,i)    
-        print("진행중..")
+    
     print("price list 업데이트 완료")
     
     conn.commit()
