@@ -29,7 +29,6 @@ public class Products {
     }
 
     @ManyToOne
-    @JoinColumn(name = "id")
     private Brands brands;
 
     @OneToMany(mappedBy = "products", cascade = CascadeType.REMOVE)

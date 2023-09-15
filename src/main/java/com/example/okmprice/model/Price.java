@@ -51,7 +51,7 @@ public class Price {
     private int productNum;
     private int productPrice;
     private Date createDate;
-    @JoinColumn(name = "productNum")
+
     @ManyToOne
     private Products products;
 

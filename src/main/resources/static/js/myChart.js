@@ -4,11 +4,11 @@ let arr = [];
 let price = [];
 
   function drawChart() {
-    
+//    let link = `http://15.164.249.252/datalist/${num}`;
 
     const url = new URL(window.location.href);
     let num = url.searchParams.get('num');
-    fetch(`http://15.164.249.252/datalist/${num}`)
+    fetch(`http://localhost:8080/datalist/${num}`)
       .then(response => response.json())
       .then(data => {
         data.sort((a, b) => {
