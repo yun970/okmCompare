@@ -3,7 +3,7 @@ name: Python Crawling
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '0 4 * * *'
 jobs:
   run_crawling:
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install beautifulsoup4 mysql-connector-python requests
+        pip install beautifulsoup4 mysql-connector-python requests fake-useragent
     - name: Run crawling script
       env:
         AWS_RDS_DB: ${{secrets.AWS_RDS_DB}}

@@ -2,8 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 import datetime as dt
-from selenium import webdriver
-from selenium.webdriver.common.by import By 
 import time
 import uuid
 from datetime import datetime, date
@@ -188,9 +186,7 @@ if __name__=='__main__':
                     ON duplicate KEY UPDATE recently_date=%s;
                     '''
     for i in product_list:
-        print(i)
         cursor.execute(insert_product_query, i)
-        print("진행중..")
     
     print("product list 업데이트 완료")
     
