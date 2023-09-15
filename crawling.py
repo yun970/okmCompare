@@ -2,8 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import mysql.connector
 import datetime as dt
-#from selenium import webdriver
-#from selenium.webdriver.common.by import By 
 import time
 import uuid
 from datetime import datetime, date
