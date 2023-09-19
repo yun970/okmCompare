@@ -215,4 +215,13 @@ if __name__=='__main__':
 
     print("최저가 list 업데이트 완료")
 
+    delete_old_price_query = '''
+    delete from price where product_num in (select product_num from products where recently_date < DATE_SUB(NOW(), INTERVAL 2 MONTH));
+    '''
+    cursor_execute(delete_old_price_query)
+    
+    delete_old_products_query = '''
+    delete from products where recently_date < DATE_SUB(NOW(), INTERVAL 2 MONTH); 
+    '''
+    cursor_execute(delete_old_products_query)
     conn.commit()

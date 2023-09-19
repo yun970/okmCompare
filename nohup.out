@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "crawling.py", line 9, in <module>
+    from fake_useragent import UserAgent
+ModuleNotFoundError: No module named 'fake_useragent'
+Traceback (most recent call last):
+  File "crawling.py", line 9, in <module>
+    from fake_useragent import UserAgent
+ModuleNotFoundError: No module named 'fake_useragent'
