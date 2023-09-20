@@ -40,7 +40,7 @@ def parsing(value):
         headers = {
             'User-Aagent': UserAgent().random
         }
-        for _ in range(3):
+        for _ in range(5):
             try:
                 response = requests.get(url, headers=headers)
                 response.raise_for_status()
