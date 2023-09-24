@@ -40,7 +40,7 @@ def parsing(value):
         headers = {
             'User-Aagent': UserAgent().random
         }
-        for _ in range(3):
+        for _ in range(5):
             try:
                 response = requests.get(url, headers=headers)
                 response.raise_for_status()
@@ -151,7 +151,9 @@ if __name__=='__main__':
             '자크뮈스','지방시','칼하트WIP','커먼프로젝트','텐씨','토리버치','토즈','톰브라운','파라부트','파라점퍼스',
             '파타고니아','페라가모','펜디','폴로랄프로렌','폴스미스','프라다','하울린','호카오네오네',
             '아워레가시','남이서팔','아나토미카','오라리','클락스','안데르센안데르센','버켄스탁']
-    # pool = Pool(processes=2)
+
+    # pool = Pool(processes=1)
+
     # pool.map(print, rows)   
     product_list=[]
     price_list=[]
@@ -210,4 +212,13 @@ if __name__=='__main__':
 
     print("최저가 list 업데이트 완료")
 
+    delete_old_price_query = '''
+    delete from price where product_num in (select product_num from products where recently_date < DATE_SUB(NOW(), INTERVAL 2 MONTH));
+    '''
+    cursor_execute(delete_old_price_query)
+    
+    delete_old_products_query = '''
+    delete from products where recently_date < DATE_SUB(NOW(), INTERVAL 2 MONTH); 
+    '''
+    cursor_execute(delete_old_products_query)
     conn.commit()
