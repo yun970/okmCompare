@@ -3,6 +3,8 @@ package com.example.okmprice.service;
 import com.example.okmprice.model.Products;
 import com.example.okmprice.repository.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,19 +32,31 @@ public class ProductsService {
         return productRepository.findAllById(keyword, pageable);
     }
 
-    public List<Products> searchLowestPrice(){
-        return productRepository.findProductsLowestPrice();
-    }
     public Optional<Products> searchProductByNumber(int keyword){
+
         return productRepository.findById(keyword);
     }
 
-
+    @Cacheable(value = "myCache")
+    public List<Products> searchLowestPrice(){
+        System.out.println("캐시 적용 전");
+        return productRepository.findProductsLowestPrice();
+    }
+    @Cacheable(value = "myCache2")
     public List<Products> searchCheapProducts(){
+        System.out.println("캐시 적용 전");
         return productRepository.findProductReductedPrice();
     }
 
+    @CacheEvict(value = "myCache", allEntries = true)
+    public void cacheEvict1(){
+        System.out.println("cacheEvict1 실행");
+    }
 
+    @CacheEvict(value = "myCache2", allEntries = true)
+    public void cacheEvict2(){
+        System.out.println("cacheEvict2 실행");
+    }
 
 
 
