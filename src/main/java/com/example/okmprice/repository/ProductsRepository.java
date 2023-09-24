@@ -21,6 +21,8 @@ public interface ProductsRepository extends JpaRepository<Products, Integer>{
 
     Page<Products> findAllByProductNameContains(String keyword, Pageable pageable);
 
+
+
     @Query("select p " +
             "from Products p " +
             "where p.lowestPrice = p.todayPrice AND recentlyDate = CURDATE() AND p.todayPrice <> p.yesterdayPrice")
@@ -30,6 +32,6 @@ public interface ProductsRepository extends JpaRepository<Products, Integer>{
             "FROM Products p " +
             "JOIN Price p_yesterday ON p_yesterday.priceId = p.yesterdayPrice " +
             "JOIN Price p_today ON p_today.priceId = p.todayPrice " +
-            "WHERE p_yesterday.productPrice > p_today.productPrice")
+            "WHERE p_yesterday.productPrice > p_today.productPrice AND recentlyDate = CURDATE()")
     List<Products> findProductReductedPrice();
 }
