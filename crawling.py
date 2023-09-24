@@ -215,10 +215,10 @@ if __name__=='__main__':
     delete_old_price_query = '''
     delete from price where product_num in (select product_num from products where recently_date < DATE_SUB(NOW(), INTERVAL 2 MONTH));
     '''
-    cursor_execute(delete_old_price_query)
+    cursor.execute(delete_old_price_query)
     
     delete_old_products_query = '''
     delete from products where recently_date < DATE_SUB(NOW(), INTERVAL 2 MONTH); 
     '''
-    cursor_execute(delete_old_products_query)
+    cursor.execute(delete_old_products_query)
     conn.commit()
