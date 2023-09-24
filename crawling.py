@@ -71,7 +71,6 @@ def parsing(value):
                 
                 product.append((productNum,str(id),productName,productImg,productAddress,today_date,today_date))
                 price.append([priceId,productNum,productPrice,today_date])
-                update.append((priceId,productNum,productNum,productNum))
 
                   
 
@@ -88,7 +87,7 @@ def parsing(value):
                 url = ""
     
     print(f"{brand} 가격 업데이트 종료")
-    return product, price, update
+    return product, price
 
 
 def crawling():
