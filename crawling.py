@@ -19,7 +19,6 @@ conn = mysql.connector.connect(
     user = AWS_RDS_USER,
     password = AWS_RDS_PASSWORD,
     database = AWS_RDS_DB,
-    autocommit = True
 )
 
 
