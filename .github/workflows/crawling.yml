@@ -3,7 +3,7 @@ name: Python Crawling
 
 on:
   schedule:
-    - cron: '0 15 * * *'
+    - cron: '0 17 * * *'
 jobs:
   run_crawling:
     runs-on: ubuntu-latest
