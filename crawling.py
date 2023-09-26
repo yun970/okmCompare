@@ -69,7 +69,7 @@ def parsing(value):
                     productImg = productImg = a.find('img').get('src')
             
                 
-                product.append((productNum,str(id),productName,productImg,productAddress,today_date,today_date))
+                product.append([productNum,str(id),productName,productImg,productAddress,today_date,today_date])
                 price.append([priceId,productNum,productPrice,today_date])
 
                   
