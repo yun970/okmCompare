@@ -22,7 +22,7 @@ conn = mysql.connector.connect(
 )
 
 
-cursor = conn.cursor()
+cursor = conn.cursor(prepared=True)
 
 def parsing(value):
     
@@ -159,9 +159,6 @@ if __name__=='__main__':
         product, price = parsing(row) 
         product_list.append(product)
         price_list.append(price)
-
-    product_list = [item for sublist in product_list for item in sublist]
-
 
     insert_product_query = '''
                     insert into products (product_num, id, product_name, product_img, product_address, recently_date) values (%s,%s,%s,%s,%s,%s)
