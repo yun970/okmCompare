@@ -61,7 +61,6 @@ def parsing(value):
                 productAddress = a.find('a').get('href')
                 productNum = a.get("data-productno")
                 productName = a.find("span", class_="prName_PrName").text.replace("'","")
-                productName = productName.replace('(','_').replace(')','_')
 
                 productPrice = int(a.find("span", class_="okmall_price").text.strip('~').replace(",",""))
                 productImg = a.find('img').get('data-original')
@@ -170,7 +169,7 @@ if __name__=='__main__':
                     ON duplicate KEY UPDATE recently_date=%s;
                     '''
     for i in product_list:
-        cursor.executemany(insert_product_query, i)
+        cursor.execute(insert_product_query, i)
     
     print("product list 업데이트 완료")
     
