@@ -164,7 +164,15 @@ if __name__=='__main__':
     product_list = [item for sublist in _product_list for item in sublist]
     price_list = [item for sublist in _price_list for item in sublist]
     
-
+    insert_price_query = '''
+        insert ignore into price (price_id,product_num,product_price,create_date) values (%s,%s,%s,%s);
+    '''
+    for i in price_list:
+        cursor.execute(insert_price_query,i)    
+    
+    print("price list 업데이트 완료")
+    
+    
     insert_product_query = '''
                     insert into products (product_num, id, product_name, product_img, product_address, recently_date) values (%s,%s,%s,%s,%s,%s)
                     ON duplicate KEY UPDATE recently_date=%s;
@@ -173,15 +181,7 @@ if __name__=='__main__':
         cursor.execute(insert_product_query, i)
     
     print("product list 업데이트 완료")
-    
-    insert_price_query = '''
-        insert ignore into price (price_id,product_num,product_price,create_date) values (%s,%s,%s,%s);
-    '''
-    for i in price_list:
-        cursor.execute(insert_price_query,i)    
-    
-    print("price list 업데이트 완료")
-   
+       
     conn.commit()
 
     update_product_query = '''                    
