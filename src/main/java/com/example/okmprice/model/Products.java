@@ -20,19 +20,12 @@ public class Products {
     private UUID lowestPrice;
     private UUID yesterdayPrice;
 
-    public Brands getBrands() {
-        return brands;
-    }
 
-    public void setBrands(Brands brands) {
-        this.brands = brands;
-    }
-
-    @ManyToOne
-    private Brands brands;
-
-    @OneToMany(mappedBy = "products", cascade = CascadeType.REMOVE)
-    private List<Price> priceList;
+//    @ManyToOne
+//    private Brands brands;
+//
+//    @OneToMany(mappedBy = "products", cascade = CascadeType.REMOVE)
+//    private List<Price> priceList;
 
     public UUID getTodayPrice() {
         return todayPrice;

@@ -39,20 +39,20 @@ public class Price {
         this.createDate = createDate;
     }
 
-    public Products getProducts() {
-        return products;
-    }
-
-    public void setProducts(Products products) {
-        this.products = products;
-    }
+//    public Products getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(Products products) {
+//        this.products = products;
+//    }
     @Id
     private UUID priceId;
     private int productNum;
     private int productPrice;
     private Date createDate;
 
-    @ManyToOne
-    private Products products;
+//    @ManyToOne
+//    private Products products;
 
 }

@@ -35,14 +35,4 @@ public class Brands {
     @Id
     private int id;
 
-    public List<Products> getProducts() {
-        return productsList;
-    }
-
-    public void setProductsList(List<Products> productsList) {
-        this.productsList = productsList;
-    }
-
-    @OneToMany(mappedBy = "brands", cascade = CascadeType.REMOVE)
-    private List<Products> productsList;
 }

@@ -152,13 +152,17 @@ if __name__=='__main__':
 
     # pool = Pool(processes=1)
     # pool.map(print, rows)   
-    product_list=[]
-    price_list=[]
+    _product_list=[]
+    _price_list=[]
 
     for row in rows:
         product, price = parsing(row) 
-        product_list.append(product)
-        price_list.append(price)
+        _product_list.append(product)
+        _price_list.append(price)
+
+    product_list = [item for sublist in _product_list for item in sublist]
+    price_list = [item for sublist in _price_list for item in sublist]
+    
 
     insert_product_query = '''
                     insert into products (product_num, id, product_name, product_img, product_address, recently_date) values (%s,%s,%s,%s,%s,%s)
@@ -173,10 +177,10 @@ if __name__=='__main__':
         insert ignore into price (price_id,product_num,product_price,create_date) values (%s,%s,%s,%s);
     '''
     for i in price_list:
-        cursor.executemany(insert_price_query,i)    
+        cursor.execute(insert_price_query,i)    
     
     print("price list 업데이트 완료")
-    
+   
     conn.commit()
 
     update_product_query = '''                    
