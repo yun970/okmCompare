@@ -14,14 +14,6 @@ AWS_RDS_PASSWORD = os.environ.get("AWS_RDS_PASSWORD")
 AWS_RDS_USER = os.environ.get("AWS_RDS_USER")
 AWS_RDS_DB = os.environ.get("AWS_RDS_DB")
 
-conn = mysql.connector.connect(
-    host = AWS_RDS_HOST,
-    user = AWS_RDS_USER,
-    password = AWS_RDS_PASSWORD,
-    database = AWS_RDS_DB,
-)
-
-cursor = conn.cursor(prepared=True)
 
 def parsing(value):
     
@@ -30,7 +22,7 @@ def parsing(value):
     id = value[2]
     
     url = "http://www.okmall.com" + url
-    print(f"{brand} 가격 업데이트 시작")
+    # print(f"{brand} 가격 업데이트 시작")
     product = []
     price = []
     update = []
@@ -84,7 +76,7 @@ def parsing(value):
             except:
                 url = ""
     
-    print(f"{brand} 가격 업데이트 종료")
+    # print(f"{brand} 가격 업데이트 종료")
     return product, price
 
 
@@ -131,6 +123,15 @@ def crawling():
             conn.commit()
             print('데이터 입력 완료')
 
+conn = mysql.connector.connect(
+    host = AWS_RDS_HOST,
+    user = AWS_RDS_USER,
+    password = AWS_RDS_PASSWORD,
+    database = AWS_RDS_DB,
+)
+
+cursor = conn.cursor(prepared=True)
+
 if __name__=='__main__':
 
     selectQuery = '''
@@ -151,15 +152,15 @@ if __name__=='__main__':
 
     # pool = Pool(processes=1)
     # pool.map(print, rows)   
-    _product_list=[]
-    _price_list=[]
+    product_list=[]
+    price_list=[]
     if conn.is_connected():
         print("연결되었습니다1")
 
     for row in rows:
         product, price = parsing(row) 
-        _product_list.append(product)
-        _price_list.append(price)
+        product_list.append(product)
+        price_list.append(price)
         conn.ping(reconnect=True)
 
     if conn.is_connected():
@@ -168,14 +169,14 @@ if __name__=='__main__':
         conn.ping(reconnect=True)
         print("연결상태 확인 완료")
     
-    product_list = [item for sublist in _product_list for item in sublist]
-    price_list = [item for sublist in _price_list for item in sublist]
+    # product_list = [item for sublist in _product_list for item in sublist]
+    # price_list = [item for sublist in _price_list for item in sublist]
     
     insert_price_query = '''
         insert ignore into price (price_id,product_num,product_price,create_date) values (%s,%s,%s,%s);
     '''
     for i in price_list:
-        cursor.execute(insert_price_query,i)    
+        cursor.executemany(insert_price_query,i)    
     
     print("price list 업데이트 완료")
     
@@ -185,7 +186,7 @@ if __name__=='__main__':
                     ON duplicate KEY UPDATE recently_date=%s;
                     '''
     for i in product_list:
-        cursor.execute(insert_product_query, i)
+        cursor.executemany(insert_product_query, i)
     
     print("product list 업데이트 완료")
        
