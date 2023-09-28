@@ -21,6 +21,7 @@ conn = mysql.connector.connect(
     database = AWS_RDS_DB,
 )
 
+print(AWS_RDS_HOST, AWS_RDS_DB, AWS_RDS_PASSWORD, AWS_RDS_USER)
 
 cursor = conn.cursor(prepared=True)
 
