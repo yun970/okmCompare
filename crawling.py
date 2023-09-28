@@ -153,14 +153,17 @@ if __name__=='__main__':
     # pool.map(print, rows)   
     _product_list=[]
     _price_list=[]
+    if conn.is_connected():
+        print("연결되었습니다1")
 
     for row in rows:
         product, price = parsing(row) 
         _product_list.append(product)
         _price_list.append(price)
+        conn.ping(reconnect=True)
 
     if conn.is_connected():
-        print("연결되었습니다")
+        print("연결되었습니다2")
 
         conn.ping(reconnect=True)
         print("연결상태 확인 완료")
