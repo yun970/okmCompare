@@ -9,18 +9,24 @@ from multiprocessing import Pool
 from fake_useragent import UserAgent
 import os
 
-AWS_RDS_HOST = os.environ.get("AWS_RDS_HOST")
-AWS_RDS_PASSWORD = os.environ.get("AWS_RDS_PASSWORD")
-AWS_RDS_USER = os.environ.get("AWS_RDS_USER")
-AWS_RDS_DB = os.environ.get("AWS_RDS_DB")
+# AWS_RDS_HOST = os.environ.get("AWS_RDS_HOST")
+# AWS_RDS_PASSWORD = os.environ.get("AWS_RDS_PASSWORD")
+# AWS_RDS_USER = os.environ.get("AWS_RDS_USER")
+# AWS_RDS_DB = os.environ.get("AWS_RDS_DB")
+
+# conn = mysql.connector.connect(
+#     host = AWS_RDS_HOST,
+#     user = AWS_RDS_USER,
+#     password = AWS_RDS_PASSWORD,
+#     database = AWS_RDS_DB,
+# )
 
 conn = mysql.connector.connect(
-    host = AWS_RDS_HOST,
-    user = AWS_RDS_USER,
-    password = AWS_RDS_PASSWORD,
-    database = AWS_RDS_DB,
+    host = 'database-1.cii1ws7cibkw.ap-northeast-2.rds.amazonaws.com',
+    user = 'yun970',
+    password = 'scc95953048',
+    database = 'okmall',
 )
-
 print(AWS_RDS_HOST, AWS_RDS_DB, AWS_RDS_PASSWORD, AWS_RDS_USER)
 
 cursor = conn.cursor(prepared=True)
