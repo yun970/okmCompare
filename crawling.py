@@ -159,6 +159,12 @@ if __name__=='__main__':
         _product_list.append(product)
         _price_list.append(price)
 
+    if conn.is_connected():
+        print("연결되었습니다")
+
+        conn.ping(reconnect=True)
+        print("연결상태 확인 완료")
+    
     product_list = [item for sublist in _product_list for item in sublist]
     price_list = [item for sublist in _price_list for item in sublist]
     
