@@ -1,3 +1,5 @@
+from tracemalloc import start
+from turtle import st
 from bs4 import BeautifulSoup
 import requests
 import mysql.connector
@@ -8,6 +10,7 @@ from datetime import datetime, date
 from multiprocessing import Pool
 from fake_useragent import UserAgent
 import os
+import time
 
 AWS_RDS_HOST = os.environ.get("AWS_RDS_HOST")
 AWS_RDS_PASSWORD = os.environ.get("AWS_RDS_PASSWORD")
@@ -156,18 +159,15 @@ if __name__=='__main__':
     price_list=[]
     if conn.is_connected():
         print("연결되었습니다1")
+    start_time = time.time()
 
     for row in rows:
         product, price = parsing(row) 
         product_list.append(product)
         price_list.append(price)
         conn.ping(reconnect=True)
-
-    if conn.is_connected():
-        print("연결되었습니다2")
-
-        conn.ping(reconnect=True)
-        print("연결상태 확인 완료")
+    end_time = time.time()
+    print(f"크롤링 시간: {end_time - start_time}")
     
     # product_list = [item for sublist in _product_list for item in sublist]
     # price_list = [item for sublist in _price_list for item in sublist]
@@ -175,23 +175,28 @@ if __name__=='__main__':
     insert_price_query = '''
         insert ignore into price (price_id,product_num,product_price,create_date) values (%s,%s,%s,%s);
     '''
+    start_time = time.time()
     for i in price_list:
         cursor.executemany(insert_price_query,i)    
     
+    end_time = time.time()
     print("price list 업데이트 완료")
-    
+    print(f"걸린 시간: {end_time - start_time}초")
     
     insert_product_query = '''
                     insert into products (product_num, id, product_name, product_img, product_address, recently_date) values (%s,%s,%s,%s,%s,%s)
                     ON duplicate KEY UPDATE recently_date=%s;
                     '''
+    start_time = time.time()
     for i in product_list:
         cursor.executemany(insert_product_query, i)
     
+    end_time = time.time()
     print("product list 업데이트 완료")
-       
+    print(f"걸린 시간: {end_time - start_time}")
     conn.commit()
 
+    
     update_product_query = '''                    
                 UPDATE products AS p
                 JOIN (
@@ -215,10 +220,13 @@ if __name__=='__main__':
                     p.yesterday_price = subquery.yesterday_price,
                     p.lowest_price = subquery.lowest_price;
                 '''
+    start_time = time.time()
     cursor.execute(update_product_query)
-
+    end_time = time.time()
     print("최저가 list 업데이트 완료")
+    print(f"걸린 시간: {end_time - start_time}")
 
+    
     delete_old_price_query = '''
     delete from price where product_num in (select product_num from products where recently_date < DATE_SUB(NOW(), INTERVAL 2 MONTH));
     '''
