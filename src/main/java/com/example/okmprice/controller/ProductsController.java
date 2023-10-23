@@ -6,7 +6,9 @@ import com.example.okmprice.model.SiteUser;
 import com.example.okmprice.service.BrandsService;
 import com.example.okmprice.service.ProductsService;
 import com.example.okmprice.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,13 +54,13 @@ public class ProductsController {
         return "product_search";
     }
     @GetMapping("/")
-    public String reductedPrice(Model model,@SessionAttribute(name = "userId", required = false) String userId){
+    public String reductedPrice(Authentication authentication, Model model, HttpServletResponse response){
         System.out.printf("홈페이지 도착");
-        Optional<SiteUser> _loginUser = userService.userFind(userId);
+        model.addAttribute("authentication", authentication);
 
-        if((_loginUser.isPresent())){
-            model.addAttribute("userId", _loginUser.get().getEmail());
-            System.out.printf("세션 있음");
+        if(authentication != null){
+            String token = response.getHeader("Authorization");
+            System.out.printf("\n성공\n");
         }
 
 
@@ -76,6 +78,7 @@ public class ProductsController {
         Optional<Products> product = productsService.searchProductByNumber(num);
         model.addAttribute("result1", product.get());
         model.addAttribute("result2", brandsService.searchBrandsId(product.get().getId()));
+
         return "itemPage";
     }
 

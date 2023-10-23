@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 public class JasyptTest {
     @Test
     public void jasyptTest(){
-        String value = "scc95953048!";
-        String res = jasyptEncoding(value);
-        System.out.printf(res);
 
     }
 

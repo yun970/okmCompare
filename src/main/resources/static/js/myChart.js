@@ -3,12 +3,17 @@ google.charts.setOnLoadCallback(drawChart);
 let arr = [];
 let price = [];
 
-  function drawChart() {
-//    let link = `http://15.164.249.252/datalist/${num}`;
+let link1 = `http://localhost:8080`;
+let link2 = `http://15.164.249.252`;
+let todayPrice;
+const url = new URL(window.location.href);
+
+
+ function drawChart() {
 
     const url = new URL(window.location.href);
     let num = url.searchParams.get('num');
-    fetch(`http://localhost:8080/datalist/${num}`)
+    fetch(`${link1}/datalist/${num}`)
       .then(response => response.json())
       .then(data => {
         data.sort((a, b) => {
@@ -24,6 +29,7 @@ let price = [];
           console.log(b);
           arr.push(b);
           price.push(data[i].productPrice);
+          todayPrice = data[i]
         }
 
         const dataTable = new google.visualization.DataTable();
@@ -31,7 +37,8 @@ let price = [];
         dataTable.addColumn('number', '가격');
         for (let i = 0; i < arr.length; i++) {
           console.log(arr[i])
-          dataTable.addRow([arr[i], price[i]]);
+          let b = arr[i].substring(5);
+          dataTable.addRow([b, price[i]]);
         }
         console.log(dataTable);
         const options = {
@@ -64,7 +71,8 @@ let price = [];
       for (let i = 0; i < arr.length; i++) {
         const dataDate = new Date(arr[i]);
         if (dataDate >= buttonTime) {
-          filteredData.push([arr[i], price[i]]);
+          let b = arr[i].substring(5);
+          filteredData.push([b, price[i]]);
         }
       }
     } else if (period === '3m') {
@@ -74,7 +82,8 @@ let price = [];
       for (let i = 0; i < arr.length; i++) {
         const dataDate = new Date(arr[i]);
         if (dataDate >= buttonTime) {
-          filteredData.push([arr[i], price[i]]);
+          let b = arr[i].substring(5);
+          filteredData.push([b, price[i]]);
         }
       }
       // 3개월 로직 추가
@@ -85,7 +94,8 @@ let price = [];
       for (let i = 0; i < arr.length; i++) {
         const dataDate = new Date(arr[i]);
         if (dataDate >= buttonTime) {
-          filteredData.push([arr[i], price[i]]);
+          let b = arr[i].substring(5);
+          filteredData.push([b, price[i]]);
         }
       }
     }
@@ -109,3 +119,25 @@ let price = [];
     chart.draw(dataTable, options);
   }
   
+function alarm(){
+    console.log("asdf");
+    let num = url.searchParams.get('num');
+    let price = todayPrice;
+    email = 'scc00057@gmail.com';
+
+
+    fetch(`${link1}/api/v1`,
+    {
+    method: "POST",
+    headers:{
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+            email: email,
+            productNum: Number(num),
+            price: price,
+        }),
+    })
+    .then((response) => console.log(response));
+
+};

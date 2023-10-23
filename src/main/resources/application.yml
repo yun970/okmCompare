@@ -1,4 +1,49 @@
 spring:
+  redis:
+    host: localhost
+    port: 6379
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: rnfrnf301@gmail.com
+    password: rthyraluvbqpqehm
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.gmail.com
+            protocol: TLSv1.2
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 58aa918676d6aefa39259d7e93931953
+            client-secret: HQCTFa0lyxrL2DlU08t8T8XqeTQVXV7m
+            client-name: Kakao
+            client-authentication-method: client_secret_post
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            scope:
+              - profile_nickname
+              - account_email
+
+        provider:
+          kakao:
+            authorizationUri: "https://kauth.kakao.com/oauth/authorize"
+            tokenUri: "https://kauth.kakao.com/oauth/token"
+            userInfoUri: "https://kapi.kakao.com/v2/user/me"
+            userNameAttribute: id
+
+
+
   devtools:
     livereload:
       enabled: true
@@ -31,6 +76,7 @@ spring:
 jasypt:
   encryptor:
     baen: jasyptStringEncryptor
+
 
 kakao:
 #  key: ${kakao_key}

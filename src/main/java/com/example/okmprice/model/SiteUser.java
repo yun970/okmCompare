@@ -1,21 +1,34 @@
 package com.example.okmprice.model;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.UUID;
 
 @Entity
 public class SiteUser{
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userid;
     @Column(unique = true)
     private String email;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String username;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     private String password;
 
     public Long getUserid() {
@@ -32,10 +45,6 @@ public class SiteUser{
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
 }
+

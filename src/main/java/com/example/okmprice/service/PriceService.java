@@ -16,7 +16,8 @@ public class PriceService {
         this.priceRepository = priceRepository;
     }
 
-    public List<Price> getPrice(Integer value) {
+    public List<Price> getAllPrice(Integer value) {
         return priceRepository.findAllByProductNum(value);
     }
+    public Price getPrice(Integer value){ return priceRepository.findByProductNum(value);}
 }

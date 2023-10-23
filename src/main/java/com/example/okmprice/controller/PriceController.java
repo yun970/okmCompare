@@ -23,11 +23,14 @@ public class PriceController {
     }
 
     @GetMapping("/datalist/{num}")
-    public List<Price> itemPage(@PathVariable("num") Integer num) {
-        return priceService.getPrice(num);
+    public List<Price> searchAllPriceLists(@PathVariable("num") Integer num) {
+        return priceService.getAllPrice(num);
     }
 
-
+    @GetMapping("/data/{num}")
+    public Price searchTodayPrice(@PathVariable("num") Integer num){
+        return priceService.getPrice(num);
+    }
 
 
 }
