@@ -18,8 +18,6 @@ class OkmpriceApplicationTests {
 
     @Test
     public void test(){
-        var asdf1 = productsService.searchLowestPrice();
-        var asdf2 = productsService.searchLowestPrice();
     }
 
 }
