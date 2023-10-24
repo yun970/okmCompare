@@ -37,15 +37,17 @@ public class ProductsService {
         return productRepository.findById(keyword);
     }
 
-    @Cacheable(value = "myCache")
+    @Cacheable(cacheNames = "myCache")
     public List<Products> searchLowestPrice(){
         System.out.println("캐시 적용 전");
-        return productRepository.findProductsLowestPrice();
+        var lowest =  productRepository.findProductsLowestPrice();
+        return lowest;
     }
-    @Cacheable(value = "myCache2")
+    @Cacheable(cacheNames = "myCache2")
     public List<Products> searchCheapProducts(){
         System.out.println("캐시 적용 전");
-        return productRepository.findProductReductedPrice();
+        var cheap = productRepository.findProductReductedPrice();
+        return cheap;
     }
 
     @CacheEvict(value = "myCache", allEntries = true)
