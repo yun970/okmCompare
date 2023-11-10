@@ -24,7 +24,9 @@ public class PriceController {
 
     @GetMapping("/datalist/{num}")
     public List<Price> searchAllPriceLists(@PathVariable("num") Integer num) {
-        return priceService.getAllPrice(num);
+        var result =priceService.getAllPrice(num);
+
+        return result;
     }
 
     @GetMapping("/data/{num}")

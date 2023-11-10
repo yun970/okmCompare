@@ -21,6 +21,9 @@ public class Products {
     private UUID yesterdayPrice;
 
 
+
+
+
 //    @ManyToOne
 //    private Brands brands;
 //

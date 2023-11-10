@@ -16,7 +16,9 @@
         <div id="Chart" class="row"></div>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script src="/js/myChart.js"></script>
-        <div>최저가 알람 설정</div>
-        <button onclick="alarm()">클릭</button>
+        <div th:if="${authentication!=null}">
+            <div>최저가 알람 설정</div>
+            <button onclick="alarm()">클릭</button>
+        </div>
     </div>
 </html>

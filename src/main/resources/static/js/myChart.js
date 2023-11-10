@@ -123,7 +123,7 @@ function alarm(){
     console.log("asdf");
     let num = url.searchParams.get('num');
     let price = todayPrice;
-    email = 'scc00057@gmail.com';
+    email = 'scc00057@naver.com';
 
 
     fetch(`${link1}/api/v1`,

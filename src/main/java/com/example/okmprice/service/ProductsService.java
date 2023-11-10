@@ -37,7 +37,7 @@ public class ProductsService {
         return productRepository.findById(keyword);
     }
 
-    @Cacheable(cacheNames = "myCache")
+    @Cacheable(cacheNames = "myCache1")
     public List<Products> searchLowestPrice(){
         System.out.println("캐시 적용 전");
         var lowest =  productRepository.findProductsLowestPrice();
@@ -50,7 +50,7 @@ public class ProductsService {
         return cheap;
     }
 
-    @CacheEvict(value = "myCache", allEntries = true)
+    @CacheEvict(value = "myCache1", allEntries = true)
     public void cacheEvict1(){
         System.out.println("cacheEvict1 실행");
     }

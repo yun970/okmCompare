@@ -21,13 +21,14 @@ import java.util.List;
 @EnableCaching
 public class CacheConfig {
 
-
     @Bean
     CacheManager localCacheManager(){
         SimpleCacheManager cacheManager = new SimpleCacheManager();
-        cacheManager.setCaches(List.of(new ConcurrentMapCache("myCache"), new ConcurrentMapCache("myCache2")));
+        cacheManager.setCaches(List.of(new ConcurrentMapCache("myCache1"), new ConcurrentMapCache("myCache2")));
         return cacheManager;
     }
+
+
     public CacheManager cacheManager(RedisConnectionFactory cf){
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()

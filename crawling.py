@@ -172,17 +172,6 @@ if __name__=='__main__':
     # product_list = [item for sublist in _product_list for item in sublist]
     # price_list = [item for sublist in _price_list for item in sublist]
     
-    insert_price_query = '''
-        insert ignore into price (price_id,product_num,product_price,create_date) values (%s,%s,%s,%s);
-    '''
-    start_time = time.time()
-    for i in price_list:
-        cursor.executemany(insert_price_query,i)    
-    
-    end_time = time.time()
-    print("price list 업데이트 완료")
-    print(f"걸린 시간: {end_time - start_time}초")
-    
     insert_product_query = '''
                     insert into products (product_num, id, product_name, product_img, product_address, recently_date) values (%s,%s,%s,%s,%s,%s)
                     ON duplicate KEY UPDATE recently_date=%s;
@@ -194,6 +183,18 @@ if __name__=='__main__':
     end_time = time.time()
     print("product list 업데이트 완료")
     print(f"걸린 시간: {end_time - start_time}")
+
+    insert_price_query = '''
+        insert ignore into price (price_id,product_num,product_price,create_date) values (%s,%s,%s,%s);
+    '''
+    start_time = time.time()
+    for i in price_list:
+        cursor.executemany(insert_price_query,i)    
+    
+    end_time = time.time()
+    print("price list 업데이트 완료")
+    print(f"걸린 시간: {end_time - start_time}초")
+    
     conn.commit()
 
     
@@ -226,6 +227,7 @@ if __name__=='__main__':
     print("최저가 list 업데이트 완료")
     print(f"걸린 시간: {end_time - start_time}")
 
+    conn.commit()
     
     delete_old_price_query = '''
     delete from price where product_num in (select product_num from products where recently_date < DATE_SUB(NOW(), INTERVAL 2 MONTH));

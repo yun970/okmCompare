@@ -7,20 +7,20 @@ import java.util.UUID;
 
 @Entity
 public class Price {
+
+    @Id
+    private UUID priceId;
+    //    private int productNum;
+    private int productPrice;
+    private Date createDate;
+    private int productNum;
+
     public UUID getPriceId() {
         return priceId;
     }
 
     public void setPriceId(UUID priceId) {
         this.priceId = priceId;
-    }
-
-    public int getProductNum() {
-        return productNum;
-    }
-
-    public void setProductNum(int productNum) {
-        this.productNum = productNum;
     }
 
     public int getProductPrice() {
@@ -39,20 +39,11 @@ public class Price {
         this.createDate = createDate;
     }
 
-//    public Products getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(Products products) {
-//        this.products = products;
-//    }
-    @Id
-    private UUID priceId;
-    private int productNum;
-    private int productPrice;
-    private Date createDate;
+    public int getProductNum() {
+        return productNum;
+    }
 
-//    @ManyToOne
-//    private Products products;
-
+    public void setProductNum(int productNum) {
+        this.productNum = productNum;
+    }
 }

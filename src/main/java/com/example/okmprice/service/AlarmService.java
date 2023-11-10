@@ -39,10 +39,11 @@ public class AlarmService {
                 System.out.printf("메일발송됨");
             }
         }
-
 //        lst.stream().filter(alarm -> alarm.getPrice().getProductPrice() < (priceRepository.findLatestPriceByProductNumber(alarm.getProductNum()).getProductPrice()))
 //                .forEach(alarm -> mailService.sendMail(alarm.getEmail()));
     }
+
+
 
 //  알람 테이블에서 모든 알람 확인 -> 각 행에서 Price의 가격을 추출하고, 해당 price의 가격과 오늘 price 가격을 비교해서 금일 가격이 더 싸다면 mail 발송
 

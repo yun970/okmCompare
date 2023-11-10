@@ -13,3 +13,5 @@ https://gregor77.github.io/2021/04/21/spring-security-02/
 siteuser 설정
 
 jwt 필터 섲렁
+
+크롤링 끝나면 request로 서버에 메일링 시작 요청하기

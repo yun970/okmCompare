@@ -8,13 +8,11 @@ import com.example.okmprice.service.ProductsService;
 import com.example.okmprice.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -72,14 +70,29 @@ public class ProductsController {
         model.addAttribute("result2", result2);
         return "main";
     }
-
+    @GetMapping("/product/test")
+    @ResponseBody
+    public List<Products> testApi(){
+        var result = productsService.searchCheapProducts();
+        return result;
+    }
     @GetMapping("/view")
-    public String ProductPage(@RequestParam int num, Model model){
+    public String ProductPage(@RequestParam int num, Model model, Authentication authentication){
         Optional<Products> product = productsService.searchProductByNumber(num);
         model.addAttribute("result1", product.get());
         model.addAttribute("result2", brandsService.searchBrandsId(product.get().getId()));
+        model.addAttribute("authentication", authentication);
 
         return "itemPage";
+    }
+
+
+    @GetMapping("/cacheEvict")
+    public ResponseEntity cacheEvict(){
+        productsService.cacheEvict1();
+        productsService.cacheEvict2();
+
+        return ResponseEntity.ok().body("성공");
     }
 
 

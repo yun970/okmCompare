@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth ->
                         oauth.userInfoEndpoint(endpointConfig -> endpointConfig.userService(customOAuth2UserService)).successHandler(oAuthSuccessHandler).failureHandler(oAuthFailureHandler))
                 .logout((logout)->logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
